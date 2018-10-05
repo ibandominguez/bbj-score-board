@@ -1,49 +1,63 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
+import React, { Component } from 'react'
+import { Dimensions, StyleSheet, Text, View, ScrollView } from 'react-native'
+import { Avatar, Timer } from './src/components'
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+const { width } = Dimensions.get('window')
+const padding = width * 0.025
+const separation = padding / 2
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+export default class App extends Component {
+  state = {
+    pointsOne: 0,
+    advantagesOne: 0,
+    pointsTwo: 0,
+    advantagesTwo: 0
+  }
 
-type Props = {};
-export default class App extends Component<Props> {
+  resetMatch() {
+    this.setState({
+      pointsOne: 0,
+      advantagesOne: 0,
+      pointsTwo: 0,
+      advantagesTwo: 0
+    })
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
+        <View style={styles.gridView}>
+          <Avatar
+            points={this.state.pointsOne}
+            advantages={this.state.advantagesOne}
+            style={{ marginRight: separation }}
+            title={'Oponente 1'}
+            image={require('./src/assets/images/avatar.png')}
+            onPointUp={() => this.setState({ pointsOne: this.state.pointsOne + 1 })}
+            onPointDown={() => this.setState({ pointsOne: this.state.pointsOne - 1 })}
+            onAdvantageUp={() => this.setState({ advantagesOne: this.state.advantagesOne + 1 })}
+            onAdvantageDown={() => this.setState({ advantagesOne: this.state.advantagesOne - 1 })}
+          />
+
+          <Avatar
+            points={this.state.pointsTwo}
+            advantages={this.state.advantagesTwo}
+            title={'Oponente 2'}
+            image={require('./src/assets/images/avatar.png')}
+            onPointUp={() => this.setState({ pointsTwo: this.state.pointsTwo + 1 })}
+            onPointDown={() => this.setState({ pointsTwo: this.state.pointsTwo - 1 })}
+            onAdvantageUp={() => this.setState({ advantagesTwo: this.state.advantagesTwo + 1 })}
+            onAdvantageDown={() => this.setState({ advantagesTwo: this.state.advantagesTwo - 1 })}
+          />
+        </View>
+
+        <Timer onReset={this.resetMatch.bind(this)} />
       </View>
-    );
+    )
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+  container: { flex: 1, padding: padding },
+  gridView: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: separation }
+})
