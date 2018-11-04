@@ -96,7 +96,7 @@ export default class App extends Component {
         </View>
 
         <Image
-          style={{ width: 100, position: 'absolute', resizeMode: 'contain', top: 10, left: (width / 2) - 50  }}
+          style={{ width: 100, position: 'absolute', resizeMode: 'contain', top: 10, left: (width / 2) - 50 }}
           source={require('./src/assets/images/logo.png')}
         />
 
