@@ -1,71 +1,66 @@
 import React, { Component } from 'react'
-import { Dimensions, StyleSheet, Text, View, ScrollView, Image } from 'react-native'
-import { Avatar, Timer } from './src/components'
+import { Dimensions, StyleSheet, Text, View, Image } from 'react-native'
+import { ScoreButton, ScoreUser, Timer } from './src/components'
 
 const { width } = Dimensions.get('window')
-const padding = width * 0.025
-const separation = padding / 2
 
 export default class App extends Component {
   state = {
-    pointsOne: 0,
-    advantagesOne: 0,
-    pointsTwo: 0,
-    advantagesTwo: 0
+    one: { points: 0, adv: 0, pen: 0 },
+    two: { points: 0, adv: 0, pen: 0 }
   }
 
-  resetMatch() {
+  resetMatch = () => {
     this.setState({
-      pointsOne: 0,
-      advantagesOne: 0,
-      pointsTwo: 0,
-      advantagesTwo: 0
+      one: { points: 0, adv: 0, pen: 0 },
+      two: { points: 0, adv: 0, pen: 0 }
+    })
+  }
+
+  incrementPlayerPoint = (player, points) => {
+    this.setState({
+      [player]: {...this.state[player], points: this.state[player].points + points }
+    })
+  }
+
+  decrementPlayerPoint = (player, points) => {
+    this.setState({
+      [player]: {...this.state[player], points: this.state[player].points - points }
     })
   }
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        <View style={styles.sponsorsView}>
-          <Image style={{ height: 50, width: 50, resizeMode: 'contain' }} source={require('./src/assets/images/logo.png')} />
-          <Image style={{ height: 50, width: 100, resizeMode: 'contain' }} source={require('./src/assets/images/novauniao.png')} />
+      <View style={{ flex: 1, flexDirection: 'row' }}>
+
+        {/* Buttons */}
+        <View style={{ flex: 0.5, flexDirection: 'column' }}>
+          <ScoreButton amount={4} onDecrement={() => this.decrementPlayerPoint('one', 4)} onIncrement={() => this.incrementPlayerPoint('one', 4)} backgroundColor={'#000'} textColor={'#fff'} />
+          <ScoreButton amount={3} onDecrement={() => this.decrementPlayerPoint('one', 3)} onIncrement={() => this.incrementPlayerPoint('one', 3)} backgroundColor={'#999'} textColor={'#fff'} />
+          <ScoreButton amount={2} onDecrement={() => this.decrementPlayerPoint('one', 2)} onIncrement={() => this.incrementPlayerPoint('one', 2)} backgroundColor={'#888'} textColor={'#fff'} />
         </View>
 
-        <View style={styles.container}>
-          <View style={styles.gridView}>
-            <Avatar
-              points={this.state.pointsOne}
-              advantages={this.state.advantagesOne}
-              style={{ marginRight: separation }}
-              title={'Felipe'}
-              image={require('./src/assets/images/felipe.png')}
-              onPointUp={() => this.setState({ pointsOne: this.state.pointsOne + 1 })}
-              onPointDown={() => this.setState({ pointsOne: this.state.pointsOne - 1 })}
-              onAdvantageUp={() => this.setState({ advantagesOne: this.state.advantagesOne + 1 })}
-              onAdvantageDown={() => this.setState({ advantagesOne: this.state.advantagesOne - 1 })}
-            />
-
-            <Avatar
-              points={this.state.pointsTwo}
-              advantages={this.state.advantagesTwo}
-              title={'Joan'}
-              image={require('./src/assets/images/joan.png')}
-              onPointUp={() => this.setState({ pointsTwo: this.state.pointsTwo + 1 })}
-              onPointDown={() => this.setState({ pointsTwo: this.state.pointsTwo - 1 })}
-              onAdvantageUp={() => this.setState({ advantagesTwo: this.state.advantagesTwo + 1 })}
-              onAdvantageDown={() => this.setState({ advantagesTwo: this.state.advantagesTwo - 1 })}
-            />
+        <View style={{ flex: 2 }}>
+          <View style={{ flex: 1, flexDirection: 'row' }}>
+            <ScoreUser points={this.state.one.points} backgroundColor={'red'} textColor={'#fff'} />
+            <ScoreUser points={this.state.two.points} backgroundColor={'blue'} textColor={'#fff'} />
           </View>
-
-          <Timer onReset={this.resetMatch.bind(this)} />
+          <Timer onReset={this.resetMatch} />
         </View>
+
+        {/* Buttons */}
+        <View style={{ flex: 0.5, flexDirection: 'column' }}>
+          <ScoreButton amount={4} onDecrement={() => this.decrementPlayerPoint('two', 4)} onIncrement={() => this.incrementPlayerPoint('two', 4)} backgroundColor={'#000'} textColor={'#fff'} />
+          <ScoreButton amount={3} onDecrement={() => this.decrementPlayerPoint('two', 3)} onIncrement={() => this.incrementPlayerPoint('two', 3)} backgroundColor={'#999'} textColor={'#fff'} />
+          <ScoreButton amount={2} onDecrement={() => this.decrementPlayerPoint('two', 2)} onIncrement={() => this.incrementPlayerPoint('two', 2)} backgroundColor={'#888'} textColor={'#fff'} />
+        </View>
+
+        <Image
+          style={{ width: 100, position: 'absolute', resizeMode: 'contain', top: 10, left: (width / 2) - 50  }}
+          source={require('./src/assets/images/logo.png')}
+        />
+
       </View>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, padding },
-  gridView: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: separation },
-  sponsorsView: { padding, backgroundColor: '#555', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }
-})
