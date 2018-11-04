@@ -29,8 +29,8 @@ export default class extends Component {
     return (
       <View style={this.getContainerStyles()}>
         <Text style={this.getTextStyles(60)}>{this.props.points}</Text>
-        <ScoreButton style={{ flex: 0.5 }} textSize={15} amount={1} hint={'(ADV)'} />
-        <ScoreButton style={{ flex: 0.5 }} textSize={15} amount={1} hint={'(PEN)'} />
+        <ScoreButton onDecrement={this.props.onAdvDecrement} onIncrement={this.props.onAdvIncrement} style={{ flex: 0.5 }} textSize={15} amount={this.props.adv} hint={'(ADV)'} />
+        <ScoreButton onDecrement={this.props.onPenDecrement} onIncrement={this.props.onPenIncrement} style={{ flex: 0.5 }} textSize={15} amount={this.props.pen} hint={'(PEN)'} />
       </View>
     )
   }

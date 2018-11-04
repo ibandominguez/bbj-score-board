@@ -29,6 +29,30 @@ export default class App extends Component {
     })
   }
 
+  incrementPlayerAdv = (player) => {
+    this.setState({
+      [player]: {...this.state[player], adv: this.state[player].adv + 1 }
+    })
+  }
+
+  decrementPlayerAdv = (player) => {
+    this.setState({
+      [player]: {...this.state[player], adv: this.state[player].adv - 1 }
+    })
+  }
+
+  incrementPlayerPen = (player) => {
+    this.setState({
+      [player]: {...this.state[player], pen: this.state[player].pen + 1 }
+    })
+  }
+
+  decrementPlayerPen = (player) => {
+    this.setState({
+      [player]: {...this.state[player], pen: this.state[player].pen - 1 }
+    })
+  }
+
   render() {
     return (
       <View style={{ flex: 1, flexDirection: 'row' }}>
@@ -42,8 +66,24 @@ export default class App extends Component {
 
         <View style={{ flex: 2 }}>
           <View style={{ flex: 1, flexDirection: 'row' }}>
-            <ScoreUser points={this.state.one.points} backgroundColor={'red'} textColor={'#fff'} />
-            <ScoreUser points={this.state.two.points} backgroundColor={'blue'} textColor={'#fff'} />
+            <ScoreUser
+              {...this.state.one}
+              onAdvIncrement={() => this.incrementPlayerAdv('one')}
+              onAdvDecrement={() => this.decrementPlayerAdv('one')}
+              onPenIncrement={() => this.incrementPlayerPen('one')}
+              onPenDecrement={() => this.decrementPlayerAdv('one')}
+              backgroundColor={'red'}
+              textColor={'#fff'}
+            />
+            <ScoreUser
+              {...this.state.two}
+              onAdvIncrement={() => this.incrementPlayerAdv('two')}
+              onAdvDecrement={() => this.decrementPlayerAdv('two')}
+              onPenIncrement={() => this.incrementPlayerPen('two')}
+              onPenDecrement={() => this.decrementPlayerAdv('two')}
+              backgroundColor={'blue'}
+              textColor={'#fff'}
+            />
           </View>
           <Timer onReset={this.resetMatch} />
         </View>
