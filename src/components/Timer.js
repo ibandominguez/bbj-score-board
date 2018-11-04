@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View, Text, Picker } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 export default class extends Component {
@@ -9,6 +9,7 @@ export default class extends Component {
   }
 
   state = {
+    selectedTimer: 300,
     countdownSeconds: 300,
     running: false
   }
@@ -46,7 +47,7 @@ export default class extends Component {
   }
 
   resetTimer() {
-    this.setState({ running: false, countdownSeconds: 300 })
+    this.setState({ running: false, countdownSeconds: this.state.selectedTimer })
     this.props.onReset()
   }
 
@@ -64,6 +65,18 @@ export default class extends Component {
     return (
       <View style={styles.container}>
         <Icon onPress={this.resetTimer.bind(this)} style={styles.button} size={40} name={'md-sync'} />
+        <Picker
+          selectedValue={this.state.selectedTimer}
+          style={{ height: 50, width: 100 }}
+          onValueChange={(itemValue, itemIndex) => this.setState({ selectedTimer: itemValue, countdownSeconds: itemValue })}
+        >
+          <Picker.Item label="5min" value={300} />
+          <Picker.Item label="6min" value={360} />
+          <Picker.Item label="7min" value={420} />
+          <Picker.Item label="8min" value={480} />
+          <Picker.Item label="9min" value={540} />
+          <Picker.Item label="10min" value={600} />
+        </Picker>
         <Text style={[styles.time, this.getTimeStyles()]}>{this.secondsToString()}</Text>
         {this.isCountdownOn() && <Icon onPress={this.toggleRunning.bind(this)} style={styles.button} size={40} name={this.state.running ? 'md-pause' : 'md-play'} />}
       </View>
